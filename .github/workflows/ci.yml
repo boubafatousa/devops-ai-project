@@ -18,8 +18,14 @@ jobs:
     - name: Build Docker image
       run: docker build -t devops-ai-app .
 
+    
     - name: Lancer le conteneur
-      run: docker run -d -p 5000:5000 devops-ai-app
+	run: docker run -d -p 5000:5000 devops-ai-app
 
-    - name: Vérifier que l'appli répond
-      run: curl http://localhost:5000 || exit 1
+	- name: Attendre le démarrage
+  run: sleep 5
+
+	- name: Vérifier que l'appli répond
+  run: curl http://localhost:5000 || exit 1  
+
+    
