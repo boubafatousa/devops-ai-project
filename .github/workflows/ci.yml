@@ -1,0 +1,25 @@
+name: CI DevOps Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Récupérer le code
+      uses: actions/checkout@v3
+
+    - name: Vérifier Python
+      run: python3 --version
+
+    - name: Build Docker image
+      run: docker build -t devops-ai-app .
+
+    - name: Lancer le conteneur
+      run: docker run -d -p 5000:5000 devops-ai-app
+
+    - name: Vérifier que l'appli répond
+      run: curl http://localhost:5000 || exit 1
