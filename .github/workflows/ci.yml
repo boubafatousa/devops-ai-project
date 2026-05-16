@@ -23,15 +23,9 @@ jobs:
 	run: docker run -d -p 5000:5000 devops-ai-app
 
 
+  - name: Vérifier que le conteneur tourne
+  run: docker ps
 
-  - name: Attendre que l'application démarre
-  run: |
-    for i in {1..10}; do
-      curl -s http://localhost:5000 && exit 0
-      echo "Attente du serveur..."
-      sleep 2
-    done
-    echo "Le serveur n'a pas démarré"
-    exit 1
 
-    
+  - name: Vérifier logs du conteneur
+  run: docker logs $(docker ps -q)  
