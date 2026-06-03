@@ -9,31 +9,29 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Récupérer le code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Vérifier Python
-      run: python3 --version
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Build Docker image
-      run: docker build -t devops-ai-app .
+      - name: Installer dépendances
+        run: pip install flask
 
-    
-    - name: Lancer le conteneur
-	run: docker run -d -p 5000:5000 devops-ai-app
+      - name: Build Docker image
+        run: docker build -t devops-ai-app .
 
+      - name: Run container
+        run: docker run -d -p 5000:5000 devops-ai-app
 
-  - name: Vérifier que le conteneur tourne
-  run: docker ps
+      - name: Vérifier conteneur
+        run: docker ps
 
+      - name: Générer log
+        run: echo "ERROR:root:division by zero" >> app.log
 
-  - name: Vérifier logs du conteneur
-  run: docker logs $(docker ps -q)  
+      - name: Analyse IA
+        run: python analyse_logs.py
 
-
-- name: Générer un log simulé
-  run: |
-    echo "ERROR:root:division by zero" >> app.log
-
-- name: Analyse IA des logs
-  run: python analyse_logs.py
