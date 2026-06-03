@@ -29,3 +29,11 @@ jobs:
 
   - name: Vérifier logs du conteneur
   run: docker logs $(docker ps -q)  
+
+
+- name: Générer un log simulé
+  run: |
+    echo "ERROR:root:division by zero" >> app.log
+
+- name: Analyse IA des logs
+  run: python analyse_logs.py
